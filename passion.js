@@ -57,7 +57,7 @@
     const commentaryText = $('commentaryText');
     const lastActive = $('lastActive');
 
-    if (moodEmoji) moodEmoji.textContent = data.stateEmoji || '✨';
+    // Don't replace SVG icon with emoji — keep the digital look
     if (commentaryText && data.commentary) {
       commentaryText.textContent = data.commentary;
     }
@@ -106,7 +106,27 @@
     }
   }
 
+  // Particle system — ambient floating dots
+  function initParticles() {
+    const container = $('particles');
+    if (!container) return;
+    const colors = ['var(--primary)', 'var(--secondary)', 'rgba(255,255,255,0.3)'];
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.bottom = '-10px';
+      p.style.width = (1 + Math.random() * 2) + 'px';
+      p.style.height = p.style.width;
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.animationDuration = (8 + Math.random() * 12) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      container.appendChild(p);
+    }
+  }
+
   // Init
+  initParticles();
   fetchData();
   setInterval(fetchData, POLL_INTERVAL);
 })();

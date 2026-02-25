@@ -34,7 +34,10 @@
           <svg class="hud-ring hud-ring-data" viewBox="0 0 200 200">
             <circle cx="100" cy="100" r="70" fill="none" stroke="var(--primary)" stroke-width="2" opacity="0.6" stroke-dasharray="40 160" stroke-linecap="round"/>
           </svg>
-          <img src="passion-portrait.png" alt="Passion AI Agent" class="avatar-img" id="avatar">
+          <picture>
+            <source srcset="passion-portrait.webp" type="image/webp">
+            <img src="passion-portrait.png" alt="Passion AI Agent" class="avatar-img" id="avatar" loading="eager">
+          </picture>
         </div>
         <div class="status-dot" id="statusDot"></div>
       </div>

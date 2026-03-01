@@ -501,6 +501,143 @@ h1.glitch {
 }
 .footer-links a:hover { color: var(--primary); }
 
+/* ═══ SCROLL REVEAL ANIMATIONS ═══ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.about-card.reveal, .building-card.reveal, .tech-item.reveal, .journal-entry.reveal {
+  transition-delay: calc(var(--reveal-delay, 0) * 0.1s);
+}
+
+/* ═══ ACTIVITY TICKER ═══ */
+.ticker-strip {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 0;
+  overflow: hidden;
+  position: relative;
+}
+.ticker-content {
+  text-align: center;
+  position: relative;
+  min-height: 1.4em;
+}
+.ticker-line {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.ticker-line.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ BACKGROUND BLOBS ═══ */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(ellipse, rgba(0, 240, 255, 0.06) 0%, transparent 70%);
+  animation: blob-drift 20s ease-in-out infinite;
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -15%;
+  right: -10%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(ellipse, rgba(157, 78, 221, 0.06) 0%, transparent 70%);
+  animation: blob-drift 25s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+@keyframes blob-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(5%, 10%) scale(1.1); }
+  50% { transform: translate(-3%, -5%) scale(0.95); }
+  75% { transform: translate(8%, -8%) scale(1.05); }
+}
+
+/* ═══ TYPEWRITER CURSOR ═══ */
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--primary);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink-cursor 1s step-end infinite;
+}
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ═══ INTERACTIVE AVATAR ═══ */
+.avatar-container { cursor: pointer; }
+
+.avatar-container:hover .hud-ring-outer { animation-duration: 4s; }
+.avatar-container:hover .hud-ring-inner { animation-duration: 3s; }
+.avatar-container:hover .avatar-img {
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.6), inset 0 0 30px rgba(0, 240, 255, 0.3);
+}
+
+.avatar-glitch {
+  animation: avatar-glitch-effect 0.4s ease-out;
+}
+@keyframes avatar-glitch-effect {
+  0% { filter: none; transform: translate(-50%, -50%); }
+  10% { filter: hue-rotate(90deg); transform: translate(-52%, -48%); }
+  20% { filter: hue-rotate(-90deg) saturate(2); transform: translate(-48%, -52%); }
+  30% { filter: hue-rotate(180deg); transform: translate(-51%, -49%); }
+  50% { filter: invert(0.3) hue-rotate(45deg); transform: translate(-50%, -50%); }
+  70% { filter: hue-rotate(-45deg); transform: translate(-49%, -51%); }
+  100% { filter: none; transform: translate(-50%, -50%); }
+}
+
+/* State-based ring colors */
+.hud-ring-data.state-working circle { stroke: var(--primary); }
+.hud-ring-data.state-celebrating circle { stroke: #ffd700; }
+.hud-ring-data.state-thinking circle { stroke: var(--secondary); }
+.hud-ring-data.state-frustrated circle { stroke: var(--accent); }
+
+/* ═══ STAT COUNTER ANIMATION ═══ */
+.stat-value.counting {
+  transition: color 0.3s;
+}
+
+/* ═══ MOOD HUE SHIFT ═══ */
+.hero.mood-celebrating { background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.08) 0%, transparent 70%); }
+.hero.mood-frustrated { background: radial-gradient(ellipse at center, rgba(255, 0, 110, 0.06) 0%, transparent 70%); }
+.hero.mood-focused { background: radial-gradient(ellipse at center, rgba(157, 78, 221, 0.06) 0%, transparent 70%); }
+
+/* ═══ FOOTER SOCIAL PLACEHOLDERS ═══ */
+.footer-social-placeholder {
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+.footer-social-placeholder:hover {
+  opacity: 0.7;
+}
+
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 640px) {
   .stats-strip { grid-template-columns: repeat(2, 1fr); }

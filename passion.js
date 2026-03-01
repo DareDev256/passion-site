@@ -224,6 +224,197 @@
     }
   }
 
+  // ═══ SCROLL REVEAL — Intersection Observer ═══
+  function initScrollReveal() {
+    const elements = document.querySelectorAll('.about-card, .building-card, .tech-item, .journal-entry, .commentary-box, .building-cta');
+
+    // Add reveal class and stagger delay
+    const groups = {};
+    elements.forEach((el) => {
+      el.classList.add('reveal');
+      const parent = el.parentElement;
+      if (!groups[parent]) groups[parent] = 0;
+      el.style.setProperty('--reveal-delay', groups[parent]++);
+    });
+
+    // Also reveal section titles
+    document.querySelectorAll('.section-title').forEach(el => el.classList.add('reveal'));
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+
+  // ═══ ANIMATED STAT COUNTERS ═══
+  let statsAnimated = false;
+
+  function animateCounter(el, target) {
+    const isNumber = /^\d+/.test(target.replace(/[~,+]/g, ''));
+    if (!isNumber) { el.textContent = target; return; }
+
+    const prefix = target.startsWith('~') ? '~' : '';
+    const suffix = target.endsWith('+') ? '+' : '';
+    const cleanNum = parseInt(target.replace(/[~,+]/g, ''), 10);
+    if (isNaN(cleanNum) || cleanNum === 0) { el.textContent = target; return; }
+
+    const duration = 1200;
+    const startTime = performance.now();
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(cleanNum * eased);
+      el.textContent = prefix + current.toLocaleString() + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function initStatCounters() {
+    const strip = $('statsStrip');
+    if (!strip || statsAnimated) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !statsAnimated) {
+          statsAnimated = true;
+          strip.querySelectorAll('.stat-value').forEach(el => {
+            const text = el.textContent.trim();
+            if (text && text !== '—') animateCounter(el, text);
+          });
+          observer.unobserve(strip);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(strip);
+  }
+
+  // ═══ ACTIVITY TICKER ═══
+  let tickerLines = [
+    'Initializing activity feed...',
+    'Scanning repos for improvements...',
+    'Running security audits across 36 repos...',
+  ];
+  let tickerIndex = 0;
+
+  function initTicker() {
+    setInterval(() => {
+      const container = $('tickerContent');
+      if (!container) return;
+      const lines = container.querySelectorAll('.ticker-line');
+      lines.forEach(l => l.classList.remove('active'));
+      tickerIndex = (tickerIndex + 1) % lines.length;
+      lines[tickerIndex].classList.add('active');
+    }, 4000);
+  }
+
+  function updateTickerFromAPI(data) {
+    const container = $('tickerContent');
+    if (!container) return;
+
+    const newLines = [];
+    if (data.commentary) newLines.push(data.commentary);
+    if (data.currentFocus) newLines.push(`Currently focused on: ${data.currentFocus}`);
+    if (data.cyclesTotal) newLines.push(`${data.cyclesTotal} brain cycles completed today`);
+    if (data.tasksToday) newLines.push(`${data.tasksToday} tasks shipped so far today`);
+    if (data.recentActivity) newLines.push(data.recentActivity);
+
+    if (newLines.length > 0) {
+      tickerLines = newLines;
+      container.innerHTML = newLines.map((line, i) =>
+        `<span class="ticker-line${i === 0 ? ' active' : ''}">${line}</span>`
+      ).join('');
+      tickerIndex = 0;
+    }
+  }
+
+  // ═══ TYPEWRITER EFFECT ═══
+  let typewriterTimeout = null;
+
+  function typewriterEffect(el, text) {
+    if (typewriterTimeout) clearTimeout(typewriterTimeout);
+    el.textContent = '';
+    // Remove existing cursor
+    const existingCursor = el.parentElement.querySelector('.typewriter-cursor');
+    if (existingCursor) existingCursor.remove();
+
+    const cursor = document.createElement('span');
+    cursor.className = 'typewriter-cursor';
+    el.after(cursor);
+
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        el.textContent += text[i];
+        i++;
+        typewriterTimeout = setTimeout(type, 25 + Math.random() * 35);
+      }
+    }
+    type();
+  }
+
+  let lastCommentary = '';
+
+  // ═══ INTERACTIVE AVATAR ═══
+  function initAvatarInteraction() {
+    const avatar = $('avatar');
+    if (!avatar) return;
+
+    avatar.addEventListener('click', () => {
+      avatar.classList.add('avatar-glitch');
+      setTimeout(() => avatar.classList.remove('avatar-glitch'), 400);
+    });
+  }
+
+  function updateAvatarState(state) {
+    const dataRing = document.querySelector('.hud-ring-data');
+    if (!dataRing) return;
+    // Remove all state classes
+    dataRing.className = dataRing.className.replace(/state-\w+/g, '').trim();
+    if (state) dataRing.classList.add(`state-${state}`);
+
+    // Mood-based hero background
+    const hero = document.querySelector('.hero');
+    if (hero) {
+      hero.className = hero.className.replace(/mood-\w+/g, '').trim();
+      if (['celebrating', 'frustrated', 'focused'].includes(state)) {
+        hero.classList.add(`mood-${state}`);
+      }
+    }
+  }
+
+  // Patch applyData to integrate new features
+  const _originalApplyData = applyData;
+  applyData = function(data) {
+    _originalApplyData(data);
+
+    // Update ticker with live data
+    updateTickerFromAPI(data);
+
+    // Typewriter on commentary if new
+    if (data.commentary && data.commentary !== lastCommentary) {
+      const commentaryText = $('commentaryText');
+      if (commentaryText) typewriterEffect(commentaryText, data.commentary);
+      lastCommentary = data.commentary;
+    }
+
+    // Avatar state
+    updateAvatarState(data.state);
+
+    // Re-init stat counters (they may have updated)
+    if (!statsAnimated) initStatCounters();
+  };
+
   // Adaptive polling — back off if API is consistently down
   function scheduleNextPoll() {
     const delay = consecutiveFailures > 3
@@ -236,5 +427,9 @@
 
   // Init
   initParticles();
+  initScrollReveal();
+  initStatCounters();
+  initTicker();
+  initAvatarInteraction();
   fetchData().then(scheduleNextPoll);
 })();

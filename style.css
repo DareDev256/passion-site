@@ -447,85 +447,70 @@ h1.glitch {
   color: var(--text-muted);
 }
 
-/* ═══ VIBE CARD ENHANCED ═══ */
-.vibe-card-enhanced {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(157, 78, 221, 0.12), rgba(255, 0, 110, 0.12));
+/* ═══ CULTURE DROP — FEATURED RELEASE ═══ */
+.culture-drop-section {
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(157, 78, 221, 0.06) 50%, var(--bg) 100%);
+  padding: 3rem 0 4rem;
+}
+.culture-drop-title {
+  color: var(--accent) !important;
+  font-size: 1rem !important;
+  letter-spacing: 0.25em !important;
+  margin-bottom: 1.5rem !important;
+}
+.culture-drop-card {
+  display: block;
+  max-width: 640px;
+  margin: 0 auto;
+  background: var(--surface);
   border: 1px solid rgba(157, 78, 221, 0.3);
-  border-radius: 12px;
+  border-radius: 16px;
+  overflow: hidden;
   text-decoration: none;
   color: var(--text);
-  transition: all 0.3s ease;
-  align-items: center;
+  transition: all 0.4s ease;
 }
-.vibe-card-enhanced:hover {
+.culture-drop-card:hover {
   border-color: var(--accent);
-  box-shadow: 0 0 30px rgba(255, 0, 110, 0.25);
-  transform: translateY(-2px);
+  box-shadow: 0 0 40px rgba(255, 0, 110, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4);
+  transform: translateY(-4px);
 }
-.vibe-enhanced-visual {
+.culture-drop-embed {
   position: relative;
-  width: 120px;
-  height: 80px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #0a0a1a 100%);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #000;
 }
-.vibe-enhanced-visual::before {
-  content: '';
+.culture-drop-embed iframe {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 40%, rgba(157, 78, 221, 0.3) 0%, transparent 60%),
-              radial-gradient(circle at 70% 60%, rgba(255, 0, 110, 0.2) 0%, transparent 50%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
-.vibe-play-overlay {
-  position: relative;
-  z-index: 1;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease, background 0.3s ease;
+.culture-drop-info {
+  padding: 1.25rem 1.5rem 1.5rem;
 }
-.vibe-card-enhanced:hover .vibe-play-overlay {
-  transform: scale(1.1);
-  background: rgba(255, 0, 110, 0.4);
-}
-.vibe-enhanced-content {
-  flex: 1;
-  min-width: 0;
-}
-.vibe-enhanced-content h3 {
-  font-size: 0.95rem;
-  margin-bottom: 0.5rem;
+.culture-drop-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
   color: var(--text);
 }
-.vibe-quote {
-  font-size: 0.8rem;
+.culture-drop-quote {
+  font-size: 0.85rem;
   color: var(--secondary);
   font-style: italic;
-  line-height: 1.6;
-  margin-bottom: 0.4rem;
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
 }
-.vibe-tagline {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+.culture-drop-tag {
+  display: inline-block;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-@media (max-width: 640px) {
-  .vibe-card-enhanced { flex-direction: column; align-items: stretch; }
-  .vibe-enhanced-visual { width: 100%; height: 100px; }
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  opacity: 0.8;
 }
 
 /* ═══ TECH GRID ═══ */

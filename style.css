@@ -408,6 +408,45 @@ h1.glitch {
   box-shadow: var(--glow);
 }
 
+/* ═══ VIBE CARD ═══ */
+.vibe-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, rgba(157, 78, 221, 0.1), rgba(255, 0, 110, 0.1));
+  border: 1px solid rgba(157, 78, 221, 0.3);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+.vibe-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(255, 0, 110, 0.2);
+  transform: translateY(-2px);
+}
+.vibe-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 0, 110, 0.15);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.vibe-card h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+.vibe-card p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
 /* ═══ TECH GRID ═══ */
 .tech-grid {
   display: grid;

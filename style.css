@@ -340,6 +340,17 @@ h1.glitch {
   transform: translateY(-2px);
 }
 
+.building-card-icon {
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.building-card:hover .building-card-icon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
 .building-card h3 {
   font-size: 1rem;
   margin-bottom: 0.5rem;

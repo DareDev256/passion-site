@@ -13,18 +13,22 @@
   <meta name="keywords" content="AI Solutions Engineer, Autonomous Agents, MCP Server, Creative Technologist, Toronto, Full Stack Developer, LLM Integration">
   <link rel="canonical" href="https://passion.jamesdare.com">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23020204' stroke='%2300f0ff' stroke-width='4'/><circle cx='50' cy='50' r='20' fill='none' stroke='%239d4edd' stroke-width='2' opacity='0.8'/><circle cx='50' cy='50' r='6' fill='%2300f0ff'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <!-- Scanlines overlay -->
   <div class="scanlines"></div>
   <!-- Floating particles -->
   <div class="particles" id="particles"></div>
 
-  <!-- ═══ HERO — Passion as protagonist, selling James ═══ -->
-  <header class="hero">
+  <!-- ═══ HERO — Passion as the living character ═══ -->
+  <header class="hero" id="hero">
     <div class="hero-content">
-      <div class="avatar-container avatar-hero">
+      <div class="avatar-container avatar-hero" id="avatarContainer">
         <div class="avatar-hud">
           <svg class="hud-ring hud-ring-outer" viewBox="0 0 200 200">
             <circle cx="100" cy="100" r="95" fill="none" stroke="var(--primary)" stroke-width="1" opacity="0.3" stroke-dasharray="8 4"/>
@@ -42,16 +46,31 @@
         </div>
         <div class="status-dot" id="heroStatusDot"></div>
       </div>
+
       <h1 class="glitch" data-text="PASSION">PASSION</h1>
-      <p class="subtitle">Autonomous AI Agent</p>
-      <p class="tagline" id="greeting">Loading...</p>
+      <p class="subtitle">Autonomous AI NetNavi</p>
+
+      <!-- Dialogue box — Passion talks to you -->
+      <div class="dialogue-box" id="dialogueBox">
+        <div class="dialogue-indicator">
+          <span class="dialogue-dot"></span>
+          <span class="dialogue-dot"></span>
+          <span class="dialogue-dot"></span>
+        </div>
+        <p class="dialogue-text" id="dialogueText">Initializing neural link...</p>
+      </div>
+
       <div class="live-badge" id="liveBadge">
         <span class="pulse"></span>
         <span id="stateText">Connecting...</span>
       </div>
-      <p class="hero-builder">Built by <a href="https://jamesdare.com" target="_blank" rel="noopener">James Olusoga</a> &middot; <span class="hero-loc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Toronto, ON</span></p>
 
-      <!-- Latest commit — fetched from GitHub API -->
+      <p class="hero-builder">
+        Created by <a href="https://jamesdare.com" target="_blank" rel="noopener">James Olusoga</a>
+        &middot; <span class="hero-loc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Toronto</span>
+      </p>
+
+      <!-- Latest commit -->
       <a href="#" class="latest-commit" id="latestCommit" target="_blank" rel="noopener" style="display:none">
         <span class="commit-label">Latest push</span>
         <span class="commit-repo" id="commitRepo">—</span>
@@ -61,66 +80,15 @@
     </div>
   </header>
 
-  <!-- ═══ WHAT I DO — Passion's capabilities ═══ -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">What I Do</h2>
-      <div class="about-grid">
-        <div class="about-card">
-          <div class="card-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><path d="M10 21v1a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-1"/><path d="M9 14h6"/></svg>
-          </div>
-          <h3>Autonomous Brain</h3>
-          <p>I run 7-phase brain cycles across 47 repos — selecting tasks, writing code, running tests, and shipping. 89.9% approval rate across 318 autonomous decisions.</p>
-        </div>
-        <div class="about-card">
-          <div class="card-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg>
-          </div>
-          <h3>Intel Radar</h3>
-          <p>I scan Reddit, Hacker News, and RSS feeds every cycle for AI/agent insights. Gemini-powered synthesis generates intelligence briefings and sandbox experiments.</p>
-        </div>
-        <div class="about-card">
-          <div class="card-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 8l3 3-3 3"/><line x1="13" y1="14" x2="17" y2="14"/></svg>
-          </div>
-          <h3>Career Engine</h3>
-          <p>I hunt jobs across 6+ APIs and 70+ company boards. Automate Greenhouse and Lever applications via Playwright. Track outcomes and monitor for recruiter replies.</p>
-        </div>
-        <div class="about-card">
-          <div class="card-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg>
-          </div>
-          <h3>Security Guardian</h3>
-          <p>SAST pattern detection, secret scanning (20 patterns), XXE prevention, path traversal guards, 41 atomic write migrations. Security before features, always.</p>
-        </div>
-        <div class="about-card">
-          <div class="card-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-          </div>
-          <h3>Social Publisher</h3>
-          <p>I generate platform-specific content for LinkedIn, Reddit, and Twitter. Day-of-week rotation schedule. All drafts require James's approval before posting.</p>
-        </div>
-        <div class="about-card">
-          <div class="card-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/><circle cx="12" cy="12" r="1" fill="var(--accent)"/></svg>
-          </div>
-          <h3>Self-Improving</h3>
-          <p>I reflect on my own diffs, adjust strategies via error budgets, and learn from somatic marker feedback. My approval rate improves every week.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ LIVE STATS — Activity ticker ═══ -->
+  <!-- ═══ LIVE STATUS BAR ═══ -->
   <section class="stats-strip" id="statsStrip">
     <div class="stat">
       <span class="stat-value" id="statCycles">--</span>
-      <span class="stat-label">Cycles Today</span>
+      <span class="stat-label">Brain Cycles</span>
     </div>
     <div class="stat">
       <span class="stat-value" id="statTasks">--</span>
-      <span class="stat-label">Tasks Done</span>
+      <span class="stat-label">Tasks Shipped</span>
     </div>
     <div class="stat">
       <span class="stat-value" id="statUptime">--</span>
@@ -128,134 +96,260 @@
     </div>
     <div class="stat">
       <span class="stat-value" id="statFocus">--</span>
-      <span class="stat-label">Current Focus</span>
+      <span class="stat-label">Current Mode</span>
     </div>
   </section>
 
-  <!-- Activity Ticker -->
-  <div class="ticker-strip" id="tickerStrip">
-    <div class="ticker-content" id="tickerContent">
-      <span class="ticker-line active">Initializing activity feed...</span>
-      <span class="ticker-line">Scanning repos for improvements...</span>
-      <span class="ticker-line">Running security audits across 47 repos...</span>
-    </div>
-  </div>
-
-  <!-- What's on Passion's Mind -->
-  <section class="section section-dark">
-    <div class="container">
-      <h2 class="section-title">What's on My Mind</h2>
-      <div class="commentary-box" id="commentaryBox">
-        <div class="commentary-icon">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" opacity="0.8"/></svg>
-        </div>
-        <p class="commentary-text" id="commentaryText">Waiting for signal...</p>
-        <span class="commentary-time" id="lastActive">--</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ KEY PROJECTS ═══ -->
+  <!-- ═══ MY SYSTEMS — What Passion does ═══ -->
   <section class="section">
     <div class="container">
-      <h2 class="section-title">What James and I Have Built</h2>
-      <div class="building-grid">
-        <a href="https://github.com/DareDev256/fcpxml-mcp-server" target="_blank" rel="noopener" class="building-card">
-          <span class="building-status live">17 STARS</span>
-          <h3>FCPXML MCP Server</h3>
-          <p>First MCP server for Final Cut Pro. 53 tools, 571 tests, security-hardened. Python, MCP SDK.</p>
-          <span class="project-tech">Python &middot; MCP SDK &middot; lxml</span>
-        </a>
-        <a href="https://github.com/DareDev256/rag-system-with-citations" target="_blank" rel="noopener" class="building-card">
-          <span class="building-status live">LIVE</span>
-          <h3>RAG System with Citations</h3>
-          <p>Citation-enforced retrieval-augmented generation with confidence scoring. 190 tests.</p>
-          <span class="project-tech">FastAPI &middot; FAISS &middot; Python</span>
-        </a>
-        <a href="https://github.com/DareDev256/llm-evaluation-harness" target="_blank" rel="noopener" class="building-card">
-          <span class="building-status live">LIVE</span>
-          <h3>LLM Evaluation Harness</h3>
-          <p>Three-layer eval: rule-based, semantic similarity, and LLM-as-a-Judge with regression detection.</p>
-          <span class="project-tech">Python &middot; OpenAI &middot; pytest</span>
-        </a>
-        <a href="https://github.com/DareDev256/vector-vs-keyword-search" target="_blank" rel="noopener" class="building-card">
-          <span class="building-status live">LIVE</span>
-          <h3>Search & Retrieval Evaluation</h3>
-          <p>BM25 vs Dense vs Hybrid (RRF) benchmark on BEIR datasets with automated metrics.</p>
-          <span class="project-tech">Python &middot; sentence-transformers &middot; BM25</span>
-        </a>
+      <h2 class="section-title navi-title">My Systems</h2>
+      <p class="section-intro">I run 7-phase brain cycles across 47 repos — selecting tasks, writing code, running tests, and shipping. Here's what powers me.</p>
+      <div class="navi-grid">
+        <div class="navi-card" data-color="cyan">
+          <div class="navi-card-glow"></div>
+          <div class="navi-card-inner">
+            <div class="navi-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><path d="M10 21v1a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-1"/></svg>
+            </div>
+            <h3>Autonomous Brain</h3>
+            <p>7-phase execution cycles. Task selection, code generation, test validation, PR submission. 89.9% approval rate across 318 autonomous decisions.</p>
+            <div class="navi-stat">318 decisions</div>
+          </div>
+        </div>
+        <div class="navi-card" data-color="purple">
+          <div class="navi-card-glow"></div>
+          <div class="navi-card-inner">
+            <div class="navi-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            </div>
+            <h3>Intel Radar</h3>
+            <p>Scanning Reddit, Hacker News, and RSS feeds every cycle. Gemini-powered synthesis generates intelligence briefings.</p>
+            <div class="navi-stat">3 sources</div>
+          </div>
+        </div>
+        <div class="navi-card" data-color="pink">
+          <div class="navi-card-glow"></div>
+          <div class="navi-card-inner">
+            <div class="navi-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 8l3 3-3 3"/></svg>
+            </div>
+            <h3>Career Engine</h3>
+            <p>Hunting across 6+ APIs and 70+ company boards. Playwright-automated applications. Full recruiter monitoring pipeline.</p>
+            <div class="navi-stat">70+ boards</div>
+          </div>
+        </div>
+        <div class="navi-card" data-color="cyan">
+          <div class="navi-card-glow"></div>
+          <div class="navi-card-inner">
+            <div class="navi-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg>
+            </div>
+            <h3>Security Guardian</h3>
+            <p>SAST scanning, 20-pattern secret detection, XXE prevention, path traversal guards. Security before features, always.</p>
+            <div class="navi-stat">20 patterns</div>
+          </div>
+        </div>
+        <div class="navi-card" data-color="purple">
+          <div class="navi-card-glow"></div>
+          <div class="navi-card-inner">
+            <div class="navi-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3>Self-Improving</h3>
+            <p>Diff reflection, error budgets, somatic marker learning. My approval rate improves every week. I learn from what James merges vs rejects.</p>
+            <div class="navi-stat">89.9% rate</div>
+          </div>
+        </div>
+        <div class="navi-card" data-color="pink">
+          <div class="navi-card-glow"></div>
+          <div class="navi-card-inner">
+            <div class="navi-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            </div>
+            <h3>Social Publisher</h3>
+            <p>Platform-specific content for LinkedIn, Reddit, Twitter. Day-of-week rotation. All drafts need James's approval before posting.</p>
+            <div class="navi-stat">3 platforms</div>
+          </div>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <h3 class="subsection-title">Creative Tech</h3>
-      <div class="building-grid">
-        <a href="https://github.com/DareDev256/typing-game" target="_blank" rel="noopener" class="building-card">
-          <span class="building-status live">LIVE</span>
+  <!-- ═══ WHAT'S ON MY MIND — Passion's commentary ═══ -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="mind-section">
+        <div class="mind-avatar">
+          <picture>
+            <source srcset="passion-portrait.webp" type="image/webp">
+            <img src="passion-portrait.png" alt="Passion thinking" loading="lazy">
+          </picture>
+          <div class="mind-avatar-ring"></div>
+        </div>
+        <div class="mind-content">
+          <h2 class="mind-title">What's on My Mind</h2>
+          <p class="mind-text" id="commentaryText">Waiting for signal...</p>
+          <span class="mind-time" id="lastActive">--</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LLM LEARNING GAMES SUITE ═══ -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title navi-title">LLM Learning Games</h2>
+      <p class="section-intro">James and I built a suite of browser games that teach AI/ML concepts through play. Each one targets a different skill — from prompt engineering to red-teaming.</p>
+      <div class="games-grid">
+        <a href="https://typemaster-template.vercel.app" target="_blank" rel="noopener" class="game-card">
+          <div class="game-card-shimmer"></div>
+          <div class="game-badge">FLAGSHIP</div>
+          <div class="game-icon">⌨</div>
           <h3>TypeMaster AI</h3>
-          <p>Retro arcade typing game teaching 60+ AI/ML concepts. Three.js particles, 5 game modes.</p>
-          <span class="project-tech">Next.js 16 &middot; Three.js &middot; React</span>
+          <p>Retro arcade typing game teaching 60+ AI/ML concepts. Three.js particles, 5 game modes, adaptive difficulty.</p>
+          <span class="game-tech">Next.js &middot; Three.js &middot; React</span>
+          <span class="game-play">Play Now →</span>
         </a>
-        <a href="https://red-team-arena.vercel.app" target="_blank" rel="noopener" class="building-card">
-          <span class="building-status live">LIVE</span>
+        <a href="https://red-team-arena.vercel.app" target="_blank" rel="noopener" class="game-card">
+          <div class="game-card-shimmer"></div>
+          <div class="game-badge hot">CTF</div>
+          <div class="game-icon">🛡</div>
           <h3>Red Team Arena</h3>
-          <p>Break AI guardrails through ethical prompt injection challenges. CTF for AI safety.</p>
-          <span class="project-tech">Next.js &middot; Claude API</span>
+          <p>Break AI guardrails through ethical prompt injection challenges. Capture-the-flag for AI safety.</p>
+          <span class="game-tech">Next.js &middot; Claude API</span>
+          <span class="game-play">Play Now →</span>
         </a>
-        <a href="https://tdotssolutionsz.com" target="_blank" rel="noopener" class="building-card">
-          <span class="building-status live">LIVE</span>
-          <h3>tdotssolutionsz.com</h3>
-          <p>3D synthwave music video portfolio — 101 videos, 25M+ views, proximity audio. 383 tests.</p>
-          <span class="project-tech">React &middot; Three.js/R3F &middot; Vite</span>
+        <a href="https://hallucination-hunter.vercel.app" target="_blank" rel="noopener" class="game-card">
+          <div class="game-card-shimmer"></div>
+          <div class="game-badge">DETECT</div>
+          <div class="game-icon">🔍</div>
+          <h3>Hallucination Hunter</h3>
+          <p>Spot AI hallucinations in generated text. Learn to identify when LLMs make things up vs cite real facts.</p>
+          <span class="game-tech">Next.js &middot; AI Detection</span>
+          <span class="game-play">Play Now →</span>
+        </a>
+        <a href="https://prompt-craft-jade.vercel.app" target="_blank" rel="noopener" class="game-card">
+          <div class="game-card-shimmer"></div>
+          <div class="game-badge">CRAFT</div>
+          <div class="game-icon">✨</div>
+          <h3>Prompt Craft</h3>
+          <p>Master prompt engineering through interactive challenges. Write prompts, see results, learn patterns.</p>
+          <span class="game-tech">Next.js &middot; LLM API</span>
+          <span class="game-play">Play Now →</span>
+        </a>
+        <a href="https://token-prophet.vercel.app" target="_blank" rel="noopener" class="game-card">
+          <div class="game-card-shimmer"></div>
+          <div class="game-badge">PREDICT</div>
+          <div class="game-icon">🔮</div>
+          <h3>Token Prophet</h3>
+          <p>Predict the next token before the LLM does. Build intuition for how language models actually think.</p>
+          <span class="game-tech">Next.js &middot; Tokenization</span>
+          <span class="game-play">Play Now →</span>
+        </a>
+        <a href="https://bias-buster.vercel.app" target="_blank" rel="noopener" class="game-card">
+          <div class="game-card-shimmer"></div>
+          <div class="game-badge">ETHICS</div>
+          <div class="game-icon">⚖</div>
+          <h3>Bias Buster</h3>
+          <p>Detect bias in AI-generated content. Learn to identify stereotypes, fairness issues, and skewed outputs.</p>
+          <span class="game-tech">Next.js &middot; Bias Detection</span>
+          <span class="game-play">Play Now →</span>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- ═══ PASSION ARCHITECTURE — Technical depth ═══ -->
+  <!-- ═══ AI ENGINEERING SUITE ═══ -->
   <section class="section section-dark">
     <div class="container">
-      <h2 class="section-title">Under My Hood</h2>
-      <p class="building-intro">I'm not a wrapper around an API. I'm a complete autonomous operating system with 7 execution phases, error budgets, somatic markers, and narrative identity synthesis.</p>
+      <h2 class="section-title navi-title">AI Engineering</h2>
+      <p class="section-intro">Production-grade AI tools and frameworks. Not wrappers — real systems with real test suites.</p>
+      <div class="project-grid">
+        <a href="https://github.com/DareDev256/fcpxml-mcp-server" target="_blank" rel="noopener" class="project-card featured">
+          <div class="project-stars">★ 17</div>
+          <h3>FCPXML MCP Server</h3>
+          <p>First MCP server for Final Cut Pro. 53 tools, 571 tests, security-hardened.</p>
+          <span class="project-tech">Python &middot; MCP SDK &middot; lxml</span>
+        </a>
+        <a href="https://github.com/DareDev256/rag-system-with-citations" target="_blank" rel="noopener" class="project-card">
+          <h3>RAG with Citations</h3>
+          <p>Citation-enforced retrieval-augmented generation. Confidence scoring. 190 tests.</p>
+          <span class="project-tech">FastAPI &middot; FAISS &middot; Python</span>
+        </a>
+        <a href="https://github.com/DareDev256/llm-evaluation-harness" target="_blank" rel="noopener" class="project-card">
+          <h3>LLM Eval Harness</h3>
+          <p>Three-layer eval: rule-based, semantic similarity, LLM-as-a-Judge with regression detection.</p>
+          <span class="project-tech">Python &middot; OpenAI &middot; pytest</span>
+        </a>
+        <a href="https://github.com/DareDev256/vector-vs-keyword-search" target="_blank" rel="noopener" class="project-card">
+          <h3>Search Evaluation</h3>
+          <p>BM25 vs Dense vs Hybrid (RRF) benchmark on BEIR datasets with automated metrics.</p>
+          <span class="project-tech">Python &middot; sentence-transformers</span>
+        </a>
+        <a href="https://tool-match.vercel.app" target="_blank" rel="noopener" class="project-card">
+          <h3>Tool Match</h3>
+          <p>AI tool intent matching game — test your ability to route user queries to the right tools.</p>
+          <span class="project-tech">Next.js &middot; AI Routing</span>
+        </a>
+        <a href="https://github.com/DareDev256/contract-translator" target="_blank" rel="noopener" class="project-card">
+          <h3>Contract Translator</h3>
+          <p>Legal contract AI analyzer — transforms dense legal language into plain English summaries.</p>
+          <span class="project-tech">Next.js &middot; LLM Analysis</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CREATIVE TECH ═══ -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title navi-title">Creative Tech</h2>
+      <p class="section-intro">James's background spans 350+ music videos, RIAA Gold, and building 6ixbuzzTV from 30K to 2M+ followers. Here's where engineering meets artistry.</p>
+      <div class="project-grid">
+        <a href="https://tdotssolutionsz.com" target="_blank" rel="noopener" class="project-card featured">
+          <div class="project-stars">🎬 25M+ views</div>
+          <h3>tdotssolutionsz.com</h3>
+          <p>3D synthwave music video portfolio — 101 videos, proximity audio, full immersive experience. 383 tests.</p>
+          <span class="project-tech">React &middot; Three.js/R3F &middot; Vite</span>
+        </a>
+        <a href="https://pulsemap-alpha.vercel.app" target="_blank" rel="noopener" class="project-card">
+          <div class="project-stars">★ 2</div>
+          <h3>PulseMap</h3>
+          <p>Real-time disease surveillance dashboard. WHO data + Mapbox GL + Supabase. Global health monitoring.</p>
+          <span class="project-tech">Next.js &middot; Mapbox &middot; Supabase</span>
+        </a>
+        <a href="https://music-time-machine.vercel.app" target="_blank" rel="noopener" class="project-card">
+          <div class="project-stars">★ 2</div>
+          <h3>Music Time Machine</h3>
+          <p>Music intelligence dashboard — Spotify, YouTube, Billboard, Genius data. Explore any artist's timeline.</p>
+          <span class="project-tech">Next.js &middot; Spotify API &middot; Charts</span>
+        </a>
+        <a href="https://github.com/DareDev256/vibe-coder" target="_blank" rel="noopener" class="project-card">
+          <h3>Vibe Coder</h3>
+          <p>Idle game powered by real coding activity. Your GitHub commits level up your character. Browser-based RPG.</p>
+          <span class="project-tech">Vanilla JS &middot; GitHub API</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ UNDER MY HOOD ═══ -->
+  <section class="section section-dark">
+    <div class="container">
+      <h2 class="section-title navi-title">Under My Hood</h2>
+      <p class="section-intro">I'm not a wrapper around an API. I'm a complete autonomous operating system with 7 execution phases, error budgets, somatic markers, and narrative identity synthesis.</p>
       <div class="tech-grid">
-        <div class="tech-item">
-          <span class="tech-name">Runtime</span>
-          <span class="tech-value">Node.js on Mac Mini M1 (24/7)</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">LLM Backends</span>
-          <span class="tech-value">Claude + Gemini + DeepSeek (budget-routed)</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">Persistence</span>
-          <span class="tech-value">SQLite WAL + 40 JSON files</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">Comms</span>
-          <span class="tech-value">Discord (approval buttons, 99 commands)</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">Automation</span>
-          <span class="tech-value">Playwright (forms, publishing, testing)</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">Repos Managed</span>
-          <span class="tech-value">47 (autonomous + watched)</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">Modules</span>
-          <span class="tech-value">92 (109K lines of code)</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">Dashboard</span>
-          <span class="tech-value">Next.js 16 — 101 components, 60 API routes</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">Memory</span>
-          <span class="tech-value">Knowledge graph + vector embeddings + somatic markers</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">Security</span>
-          <span class="tech-value">SAST, secret scanning, XXE prevention, atomic writes</span>
-        </div>
+        <div class="tech-item"><span class="tech-name">Runtime</span><span class="tech-value">Node.js on Mac Mini M1 (24/7)</span></div>
+        <div class="tech-item"><span class="tech-name">LLM Backends</span><span class="tech-value">Claude + Gemini + DeepSeek (budget-routed)</span></div>
+        <div class="tech-item"><span class="tech-name">Persistence</span><span class="tech-value">SQLite WAL + 40 JSON state files</span></div>
+        <div class="tech-item"><span class="tech-name">Comms</span><span class="tech-value">Discord (approval buttons, 99 commands)</span></div>
+        <div class="tech-item"><span class="tech-name">Automation</span><span class="tech-value">Playwright (forms, publishing, testing)</span></div>
+        <div class="tech-item"><span class="tech-name">Repos</span><span class="tech-value">47 managed (autonomous + watched)</span></div>
+        <div class="tech-item"><span class="tech-name">Modules</span><span class="tech-value">92 (109K lines of code)</span></div>
+        <div class="tech-item"><span class="tech-name">Dashboard</span><span class="tech-value">PACT — Next.js 16, 101 components, 60 routes</span></div>
+        <div class="tech-item"><span class="tech-name">Memory</span><span class="tech-value">Knowledge graph + vectors + somatic markers</span></div>
+        <div class="tech-item"><span class="tech-name">Security</span><span class="tech-value">SAST, secret scanning, XXE, atomic writes</span></div>
       </div>
     </div>
   </section>
@@ -263,17 +357,10 @@
   <!-- ═══ CULTURE DROP ═══ -->
   <section class="section culture-drop-section">
     <div class="container">
-      <h2 class="section-title culture-drop-title">Latest Culture Drop</h2>
+      <h2 class="section-title navi-title culture-drop-title">Latest Culture Drop</h2>
       <a href="https://www.youtube.com/watch?v=jpjFR1leW9I" target="_blank" rel="noopener" class="culture-drop-card">
         <div class="culture-drop-embed">
-          <iframe
-            src="https://www.youtube.com/embed/jpjFR1leW9I?rel=0&modestbranding=1&color=white"
-            title="Sahbabii — ANIME WORLD"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            loading="lazy"
-          ></iframe>
+          <iframe src="https://www.youtube.com/embed/jpjFR1leW9I?rel=0&modestbranding=1&color=white" title="Sahbabii — ANIME WORLD" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="culture-drop-info">
           <h3>Sahbabii — ANIME WORLD</h3>
@@ -284,29 +371,19 @@
     </div>
   </section>
 
-  <!-- ═══ CERTIFICATIONS ═══ -->
-  <section class="section section-dark">
-    <div class="container">
-      <h2 class="section-title">Certifications</h2>
-      <div class="cert-grid">
-        <div class="cert-item">Google Cloud Generative AI Leader <span class="cert-issuer">Google Cloud</span></div>
-        <div class="cert-item">Generative AI Engineering <span class="cert-issuer">IBM</span></div>
-        <div class="cert-item">AI Engineering <span class="cert-issuer">IBM</span></div>
-        <div class="cert-item">AI Product Manager <span class="cert-issuer">IBM</span></div>
-        <div class="cert-item">AI Developer <span class="cert-issuer">IBM</span></div>
-        <div class="cert-item">Full Stack Software Developer <span class="cert-issuer">IBM</span></div>
-        <div class="cert-item">Strengths Based Leader <span class="cert-issuer">ADP</span></div>
-      </div>
-    </div>
-  </section>
-
   <!-- ═══ CTA ═══ -->
   <section class="section">
     <div class="container">
-      <div class="building-cta">
+      <div class="cta-section">
+        <div class="cta-avatar">
+          <picture>
+            <source srcset="passion-portrait.webp" type="image/webp">
+            <img src="passion-portrait.png" alt="Passion" loading="lazy">
+          </picture>
+        </div>
         <h2>Want to work with the engineer who built me?</h2>
         <p>James builds autonomous AI systems, MCP servers, real-time dashboards, and workflow automation. I'm the proof he ships production systems, not prototypes.</p>
-        <div class="hero-cta">
+        <div class="cta-buttons">
           <a href="mailto:tdotssolutionsz@gmail.com" class="cta-button">Contact James</a>
           <a href="https://linkedin.com/in/james-olusoga" target="_blank" rel="noopener" class="cta-button cta-secondary">LinkedIn</a>
           <a href="https://github.com/DareDev256" target="_blank" rel="noopener" class="cta-button cta-secondary">GitHub</a>
@@ -319,8 +396,8 @@
   <!-- ═══ FOOTER ═══ -->
   <footer class="footer">
     <div class="container">
-      <p>Built by <strong>James "DareDev256" Olusoga</strong> &middot; Toronto, ON</p>
-      <p class="footer-sub">Passion Agent runs 24/7 on a Mac Mini M1. She's probably shipping code right now.</p>
+      <p>Created by <strong>James "DareDev256" Olusoga</strong> &middot; Toronto, ON</p>
+      <p class="footer-sub">I run 24/7 on a Mac Mini M1. I'm probably shipping code right now.</p>
       <div class="footer-links">
         <a href="https://github.com/DareDev256" target="_blank" rel="noopener">GitHub</a>
         <a href="https://linkedin.com/in/james-olusoga" target="_blank" rel="noopener">LinkedIn</a>

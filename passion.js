@@ -303,7 +303,7 @@
   let tickerLines = [
     'Initializing activity feed...',
     'Scanning repos for improvements...',
-    'Running security audits across 36 repos...',
+    'Running security audits across 47 repos...',
   ];
   let tickerIndex = 0;
 
@@ -425,6 +425,47 @@
     }, delay);
   }
 
+  // ═══ LATEST COMMIT — GitHub Events API ═══
+  async function fetchLatestCommit() {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
+
+      const res = await fetch('https://api.github.com/users/DareDev256/events/public?per_page=10', {
+        signal: controller.signal,
+        headers: { 'Accept': 'application/vnd.github.v3+json' },
+      });
+      clearTimeout(timeout);
+
+      if (!res.ok) return;
+      const events = await res.json();
+
+      // Find the latest PushEvent
+      const push = events.find(e => e.type === 'PushEvent' && e.payload && e.payload.commits && e.payload.commits.length > 0);
+      if (!push) return;
+
+      const repo = push.repo.name.replace('DareDev256/', '');
+      const commit = push.payload.commits[push.payload.commits.length - 1];
+      const msg = commit.message.split('\n')[0]; // First line only
+      const sha = commit.sha.substring(0, 7);
+      const url = `https://github.com/${push.repo.name}/commit/${commit.sha}`;
+
+      const el = $('latestCommit');
+      const repoEl = $('commitRepo');
+      const msgEl = $('commitMsg');
+
+      if (el && repoEl && msgEl) {
+        repoEl.textContent = repo;
+        msgEl.textContent = msg;
+        el.href = url;
+        el.style.display = '';
+      }
+    } catch (err) {
+      // Silent fail — commit card stays hidden
+      console.warn('[Passion] GitHub API unavailable:', err.message);
+    }
+  }
+
   // Init
   initParticles();
   initScrollReveal();
@@ -432,4 +473,5 @@
   initTicker();
   initAvatarInteraction();
   fetchData().then(scheduleNextPoll);
+  fetchLatestCommit();
 })();

@@ -50,17 +50,128 @@ body {
 
 .hero-content { position: relative; z-index: 2; }
 
+.hero-eyebrow {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+
+.hero-builder {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 1.5rem;
+}
+.hero-builder a {
+  color: var(--primary);
+  text-decoration: none;
+}
+.hero-builder a:hover { text-decoration: underline; }
+
+.hero-loc {
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.hero-loc svg { opacity: 0.6; }
+
+/* Latest commit card */
+.latest-commit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 1.25rem;
+  padding: 10px 18px;
+  background: rgba(0, 240, 255, 0.04);
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+  max-width: 500px;
+}
+.latest-commit:hover {
+  border-color: rgba(0, 240, 255, 0.35);
+  background: rgba(0, 240, 255, 0.07);
+  transform: translateY(-1px);
+}
+.commit-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--success);
+  white-space: nowrap;
+}
+.commit-repo {
+  color: var(--primary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.commit-msg {
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+.commit-arrow {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.latest-commit:hover .commit-arrow { transform: translate(2px, -2px); }
+
+@media (max-width: 640px) {
+  .latest-commit { max-width: 90vw; padding: 8px 14px; gap: 8px; }
+  .commit-msg { max-width: 140px; }
+}
+
+.avatar-hero {
+  width: 180px !important;
+  height: 180px !important;
+  margin: 0 auto 2rem;
+}
+.avatar-hero .avatar-hud {
+  width: 180px !important;
+  height: 180px !important;
+}
+.avatar-hero .avatar-img {
+  width: 120px !important;
+  height: 120px !important;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.cta-secondary {
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+.cta-secondary:hover {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: transparent !important;
+}
+
 .avatar-container {
   position: relative;
-  width: 200px;
-  height: 200px;
-  margin: 0 auto 2rem;
+  width: 140px;
+  height: 140px;
 }
 
 .avatar-hud {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 140px;
+  height: 140px;
 }
 
 .hud-ring {
@@ -754,10 +865,134 @@ h1.glitch {
   opacity: 0.7;
 }
 
+/* ═══ PASSION LIVE CARD ═══ */
+.passion-live-card {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.passion-live-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.passion-live-info h3 {
+  font-size: 1.2rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.version-badge {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 4px;
+  color: var(--primary);
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+.passion-greeting {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  font-style: italic;
+}
+
+.passion-live-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+
+.mini-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background: var(--surface);
+}
+
+.mini-stat-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.mini-stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.passion-live-card .commentary-box {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: var(--surface-2);
+  padding: 1.5rem 2rem;
+}
+
+/* ═══ SUBSECTION TITLE ═══ */
+.subsection-title {
+  font-size: 1rem;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 2.5rem 0 1.5rem;
+  text-align: center;
+}
+
+/* ═══ PROJECT TECH LABEL ═══ */
+.project-tech {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ═══ CERTIFICATIONS GRID ═══ */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.5rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.cert-item {
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: var(--text);
+  border-left: 2px solid var(--primary);
+  background: var(--surface-2);
+}
+
+.cert-issuer {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 640px) {
   .stats-strip { grid-template-columns: repeat(2, 1fr); }
-  .avatar-container { width: 140px; height: 140px; }
-  .avatar-ring { width: 140px; height: 140px; }
+  .passion-live-header { flex-direction: column; text-align: center; }
+  .passion-live-stats { grid-template-columns: repeat(2, 1fr); }
+  .avatar-container { width: 100px; height: 100px; }
+  .avatar-hud { width: 100px; height: 100px; }
+  .avatar-img { width: 70px; height: 70px; }
   .about-grid { grid-template-columns: 1fr; }
+  .cert-grid { grid-template-columns: 1fr; }
+  .hero-cta { flex-direction: column; align-items: center; }
 }

@@ -1051,20 +1051,19 @@
 
   // ——— 19. FCPXML MCP BANNER — Popular project reaction ———
   function initFcpxmlBanner() {
-    const banner = $('topBanner');
-    if (!banner) return;
+    const badge = $('fcpxmlBadge');
+    if (!badge) return;
 
-    banner.addEventListener('click', (e) => {
-      // Don't prevent default — let the link work — but fire the egg
+    badge.addEventListener('click', (e) => {
       const isNew = discoverEgg('fcpxml');
       if (isNew) {
-        showToast("Oh that one? Yeah, it's doing pretty well right now. 17 stars and counting.", 'gold');
-        passionSay("FCPXML MCP Server — our most popular project. First MCP server for Final Cut Pro. 571 tests. James is proud of that one.");
+        showToast("Oh that one? Yeah, it's pretty popular right now.", 'gold');
+        passionSay("FCPXML MCP Server — 17 stars, 571 tests. First MCP server for Final Cut Pro. James is proud of that one.");
       } else {
         const quips = [
           "Back to check on the star count?",
-          "Still going strong. 17 stars — not bad for a niche MCP server.",
-          "James's best open source work. 53 tools, fully security-hardened.",
+          "Still going strong. 17 stars for a niche MCP server.",
+          "53 tools, fully security-hardened. Go check it out.",
         ];
         showToast(quips[Math.floor(Math.random() * quips.length)], 'gold');
       }

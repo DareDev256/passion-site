@@ -868,7 +868,7 @@
         console.log('%cModules: 92 · LOC: 109K', 'color: #9d4edd;');
         console.log('%cYour trust level: ' + getTrustLevel() + '/5', 'color: #22c55e;');
         console.log('%cVisits: ' + trust.visits, 'color: #22c55e;');
-        console.log('%cEggs found: ' + trust.eggsFound.length + '/15', 'color: #ffd700;');
+        console.log('%cEggs found: ' + trust.eggsFound.length + '/20', 'color: #ffd700;');
         console.log('%cEggs: ' + (trust.eggsFound.length ? trust.eggsFound.join(', ') : 'none yet'), 'color: #666;');
         return '✓';
       },
@@ -884,17 +884,17 @@
       },
       trust: function() {
         console.log('%cTrust Level: ' + getTrustLevel() + '/5', 'color: #22c55e; font-size: 14px;');
-        console.log('%cVisits: ' + trust.visits + ' · Eggs: ' + trust.eggsFound.length + '/15', 'color: #666;');
+        console.log('%cVisits: ' + trust.visits + ' · Eggs: ' + trust.eggsFound.length + '/20', 'color: #666;');
         const titles = ['Stranger', 'Visitor', 'Familiar', 'Trusted', 'Inner Circle', 'Crew'];
         console.log('%cStatus: ' + titles[getTrustLevel()], 'color: #ffd700;');
         return titles[getTrustLevel()];
       },
       eggs: function() {
         discoverEgg('console-eggs');
-        console.log('%c🥚 Easter Eggs: ' + trust.eggsFound.length + '/15', 'color: #ffd700; font-size: 14px;');
+        console.log('%c🥚 Easter Eggs: ' + trust.eggsFound.length + '/20', 'color: #ffd700; font-size: 14px;');
         console.log('%cFound: ' + (trust.eggsFound.length ? trust.eggsFound.join(', ') : 'none yet'), 'color: #666;');
         console.log('%cHints: Try interacting with different parts of the page. Click things. Leave. Come back. Highlight text. Open DevTools. Scroll to the bottom. Print the page. Right-click. Be patient. Be impatient.', 'color: #9d4edd;');
-        return '🥚 ' + trust.eggsFound.length + '/15';
+        return '🥚 ' + trust.eggsFound.length + '/20';
       },
     };
   }
@@ -992,7 +992,7 @@
       <div class="ctx-item" data-action="source">👁 View Source (she's watching)</div>
       <div class="ctx-item" data-action="wallpaper">🖼 Download Avatar</div>
       <div class="ctx-item ctx-divider"></div>
-      <div class="ctx-item" data-action="eggs">🥚 Eggs: ${trust.eggsFound.length}/15</div>
+      <div class="ctx-item" data-action="eggs">🥚 Eggs: ${trust.eggsFound.length}/20</div>
       <div class="ctx-item" data-action="trust">💜 Trust: Lv.${getTrustLevel()}</div>
     `;
     document.body.appendChild(menu);
@@ -1001,7 +1001,7 @@
       e.preventDefault();
       discoverEgg('context-menu');
       // Update egg count
-      menu.querySelector('[data-action="eggs"]').textContent = '🥚 Eggs: ' + trust.eggsFound.length + '/15';
+      menu.querySelector('[data-action="eggs"]').textContent = '🥚 Eggs: ' + trust.eggsFound.length + '/20';
       menu.querySelector('[data-action="trust"]').textContent = '💜 Trust: Lv.' + getTrustLevel();
 
       menu.style.left = Math.min(e.clientX, window.innerWidth - 220) + 'px';
@@ -1046,8 +1046,77 @@
   function initPrintDetection() {
     window.addEventListener('beforeprint', () => {
       discoverEgg('print');
-      // The CSS handles the visual — just track it
     });
+  }
+
+  // ——— 19. FCPXML MCP BANNER — Popular project reaction ———
+  function initFcpxmlBanner() {
+    const banner = $('topBanner');
+    if (!banner) return;
+
+    banner.addEventListener('click', (e) => {
+      // Don't prevent default — let the link work — but fire the egg
+      const isNew = discoverEgg('fcpxml');
+      if (isNew) {
+        showToast("Oh that one? Yeah, it's doing pretty well right now. 17 stars and counting.", 'gold');
+        passionSay("FCPXML MCP Server — our most popular project. First MCP server for Final Cut Pro. 571 tests. James is proud of that one.");
+      } else {
+        const quips = [
+          "Back to check on the star count?",
+          "Still going strong. 17 stars — not bad for a niche MCP server.",
+          "James's best open source work. 53 tools, fully security-hardened.",
+        ];
+        showToast(quips[Math.floor(Math.random() * quips.length)], 'gold');
+      }
+    });
+  }
+
+  // ——— 20. ANIME WORLD VIDEO — Culture Drop watcher ———
+  function initAnimeWorldEgg() {
+    const iframe = document.querySelector('.culture-drop-embed iframe');
+    if (!iframe) return;
+
+    // Detect when user interacts with the iframe (clicks into it to play)
+    // We can't detect play inside a cross-origin iframe, but we CAN detect
+    // when the iframe gains focus (user clicked into it to watch)
+    let watchStartTime = 0;
+    let watchCheckTimer = null;
+
+    window.addEventListener('blur', () => {
+      // If focus left the window, check if the iframe is what got focus
+      // This happens when someone clicks the YouTube embed to play
+      if (document.activeElement === iframe || isIframeFocused()) {
+        watchStartTime = Date.now();
+        discoverEgg('anime-click');
+        showToast("Anime World by Sahbabii — a classic. Enjoy.", 'accent');
+        passionSay("Good taste. James directed 350+ music videos before AI. This one's from that era.");
+
+        // Check if they're still watching after 30s
+        watchCheckTimer = setTimeout(() => {
+          if (document.hidden || !document.hasFocus()) {
+            discoverEgg('anime-watch');
+            // They'll see this when they come back
+          }
+        }, 30000);
+      }
+    });
+
+    // Also detect via IntersectionObserver — when the video section is visible
+    // and user clicks into it
+    const card = document.querySelector('.culture-drop-card');
+    if (card) {
+      card.addEventListener('click', (e) => {
+        // If they clicked the card (not the iframe directly)
+        if (e.target.closest('.culture-drop-embed')) return;
+        discoverEgg('culture-click');
+      });
+    }
+
+    function isIframeFocused() {
+      try {
+        return document.activeElement && document.activeElement.tagName === 'IFRAME';
+      } catch { return false; }
+    }
   }
 
   // ——— TIME TRACKING for trust ———
@@ -1083,6 +1152,8 @@
   initLateNightMode();
   initContextMenu();
   initPrintDetection();
+  initFcpxmlBanner();
+  initAnimeWorldEgg();
   initTimeTracking();
   resetIdleTimer();
   updateTrustBadge();

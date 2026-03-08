@@ -123,7 +123,48 @@ body {
   object-fit: cover;
   border: 2px solid var(--primary);
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), inset 0 0 20px rgba(0, 240, 255, 0.1);
-  animation: avatar-breathe 4s ease-in-out infinite;
+  animation: avatar-intro 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, avatar-breathe 4s ease-in-out 1.2s infinite;
+}
+
+/* Avatar intro — scales up with a spin from nothing */
+@keyframes avatar-intro {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+    filter: blur(10px) brightness(2);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1) rotate(15deg);
+    filter: blur(0) brightness(1.3);
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(0.95) rotate(-5deg);
+    filter: brightness(1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
+}
+
+/* HUD rings intro — staggered fade in */
+.hud-ring-outer {
+  animation: spin 12s linear infinite, ring-intro 0.8s ease-out forwards;
+  opacity: 0;
+}
+.hud-ring-inner {
+  animation: spin 8s linear infinite reverse, ring-intro 0.8s ease-out 0.2s forwards;
+  opacity: 0;
+}
+.hud-ring-data {
+  animation: spin 20s linear infinite, ring-intro 0.8s ease-out 0.4s forwards;
+  filter: drop-shadow(0 0 4px var(--primary));
+  opacity: 0;
+}
+@keyframes ring-intro {
+  0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 @keyframes avatar-breathe {
   0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), inset 0 0 20px rgba(0, 240, 255, 0.1); }
@@ -689,10 +730,16 @@ h1.glitch {
 }
 
 .game-icon {
-  font-size: 2rem;
   margin-bottom: 0.75rem;
-  filter: grayscale(0.2);
+  color: var(--primary);
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.3));
+  transition: transform 0.4s ease, filter 0.4s ease;
 }
+.game-card:hover .game-icon {
+  transform: rotate(8deg) scale(1.15);
+  filter: drop-shadow(0 0 14px rgba(0, 240, 255, 0.6));
+}
+.game-icon svg { display: block; }
 .game-card h3 {
   font-family: 'Orbitron', monospace;
   font-size: 0.95rem;
@@ -996,4 +1043,92 @@ h1.glitch {
   .commit-msg { max-width: 140px; }
   h1.glitch { font-size: 2.5rem; }
   .tech-grid { grid-template-columns: 1fr; }
+}
+
+/* ═══ EASTER EGG STATES ═══ */
+
+/* Konami code — party mode */
+body.easter-party {
+  animation: party-bg 0.5s ease infinite;
+}
+body.easter-party .avatar-img {
+  animation: party-spin 0.6s ease-in-out !important;
+  border-color: #ffd700 !important;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.6), 0 0 80px rgba(255, 0, 110, 0.3) !important;
+}
+body.easter-party h1.glitch {
+  animation: glitch-hard 0.3s ease infinite;
+}
+@keyframes party-bg {
+  0% { background: var(--bg); }
+  25% { background: #0a0008; }
+  50% { background: #000a0a; }
+  75% { background: #08000a; }
+  100% { background: var(--bg); }
+}
+@keyframes party-spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  50% { transform: translate(-50%, -50%) rotate(360deg) scale(1.2); }
+  100% { transform: translate(-50%, -50%) rotate(720deg) scale(1); }
+}
+@keyframes glitch-hard {
+  0% { text-shadow: 2px 0 var(--accent), -2px 0 var(--secondary); }
+  25% { text-shadow: -2px 2px var(--primary), 2px -2px var(--accent); }
+  50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); }
+  75% { text-shadow: -1px -1px var(--accent), 1px 1px var(--secondary); }
+  100% { text-shadow: 0 0 40px rgba(0, 240, 255, 0.4), 0 0 80px rgba(0, 240, 255, 0.2); }
+}
+
+/* Frustrated state — screen shake */
+body.easter-frustrated {
+  animation: shake 0.4s ease-in-out;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+  20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+/* Hyped state — rainbow border pulse */
+body.easter-hyped .avatar-img {
+  border-color: var(--accent) !important;
+  animation: hype-pulse 0.8s ease-in-out !important;
+}
+@keyframes hype-pulse {
+  0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 20px rgba(255, 0, 110, 0.5); }
+  50% { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 0, 110, 0.8), 0 0 100px rgba(157, 78, 221, 0.4); }
+  100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 20px rgba(255, 0, 110, 0.5); }
+}
+
+/* Easter egg toast notification */
+.easter-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 0.75rem 1.5rem;
+  background: var(--surface-2);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 0.85rem;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+  font-family: 'Orbitron', monospace;
+  letter-spacing: 0.05em;
+}
+.easter-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+.easter-toast.accent {
+  border-color: var(--accent);
+  box-shadow: 0 0 30px rgba(255, 0, 110, 0.2);
+}
+.easter-toast.gold {
+  border-color: #ffd700;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
 }

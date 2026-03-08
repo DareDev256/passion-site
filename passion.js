@@ -469,6 +469,189 @@
     }
   }
 
+  // ═══ EASTER EGGS ═══
+
+  function showToast(message, style) {
+    // Remove existing toast
+    const existing = document.querySelector('.easter-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'easter-toast' + (style ? ' ' + style : '');
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => toast.classList.add('show'));
+    });
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 400);
+    }, 3000);
+  }
+
+  // 1. Konami Code — ↑↑↓↓←→←→BA — Party mode
+  const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let konamiIndex = 0;
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === KONAMI[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === KONAMI.length) {
+        konamiIndex = 0;
+        triggerPartyMode();
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+
+  function triggerPartyMode() {
+    document.body.classList.add('easter-party');
+    showToast('PARTY MODE ACTIVATED', 'gold');
+
+    // Burst of extra particles
+    const container = $('particles');
+    if (container) {
+      for (let i = 0; i < 40; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.bottom = '-10px';
+        p.style.width = (2 + Math.random() * 3) + 'px';
+        p.style.height = p.style.width;
+        p.style.background = ['#ff006e', '#ffd700', '#00f0ff', '#9d4edd'][Math.floor(Math.random() * 4)];
+        p.style.animationDuration = (3 + Math.random() * 5) + 's';
+        p.style.animationDelay = (Math.random() * 2) + 's';
+        container.appendChild(p);
+      }
+    }
+
+    setTimeout(() => {
+      document.body.classList.remove('easter-party');
+    }, 4000);
+  }
+
+  // 2. Rapid avatar clicks (5x fast) — triggers frustrated state
+  let avatarClickTimes = [];
+
+  function initEasterAvatarClicks() {
+    const container = $('avatarContainer');
+    if (!container) return;
+
+    container.addEventListener('click', () => {
+      const now = Date.now();
+      avatarClickTimes.push(now);
+      // Keep only last 5
+      if (avatarClickTimes.length > 5) avatarClickTimes.shift();
+
+      if (avatarClickTimes.length >= 5) {
+        const span = now - avatarClickTimes[0];
+        if (span < 1500) {
+          // 5 clicks in under 1.5s
+          avatarClickTimes = [];
+          triggerFrustrated();
+        }
+      }
+    });
+  }
+
+  function triggerFrustrated() {
+    document.body.classList.add('easter-frustrated');
+    showToast('Hey! Stop poking me!', 'accent');
+
+    // Temporarily change dialogue
+    const textEl = $('dialogueText');
+    const originalText = textEl ? textEl.textContent : '';
+    if (textEl) textEl.textContent = "Ow! Okay okay I get it, you found the easter egg. Happy now?";
+
+    setTimeout(() => {
+      document.body.classList.remove('easter-frustrated');
+      if (textEl && originalText) {
+        setTimeout(() => { textEl.textContent = originalText; }, 2000);
+      }
+    }, 500);
+  }
+
+  // 3. Secret word — type "passion" anywhere on the page
+  let secretBuffer = '';
+
+  document.addEventListener('keypress', function (e) {
+    secretBuffer += e.key.toLowerCase();
+    if (secretBuffer.length > 10) secretBuffer = secretBuffer.slice(-10);
+
+    if (secretBuffer.includes('passion')) {
+      secretBuffer = '';
+      triggerHyped();
+    }
+  });
+
+  function triggerHyped() {
+    document.body.classList.add('easter-hyped');
+    showToast("You said my name! I'm hyped!", 'accent');
+
+    // Quick color shift on all navi cards
+    document.querySelectorAll('.navi-card-inner').forEach(card => {
+      card.style.transition = 'border-color 0.3s, box-shadow 0.3s';
+      card.style.borderColor = 'rgba(255, 0, 110, 0.5)';
+      card.style.boxShadow = '0 0 20px rgba(255, 0, 110, 0.2)';
+      setTimeout(() => {
+        card.style.borderColor = '';
+        card.style.boxShadow = '';
+      }, 2000);
+    });
+
+    setTimeout(() => {
+      document.body.classList.remove('easter-hyped');
+    }, 1000);
+  }
+
+  // 4. Idle detection — if user doesn't interact for 45s, Passion gets lonely
+  let idleTimer = null;
+  let idleTriggered = false;
+
+  function resetIdleTimer() {
+    if (idleTriggered) return;
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      idleTriggered = true;
+      const textEl = $('dialogueText');
+      const box = $('dialogueBox');
+      if (textEl && box && box.classList.contains('complete')) {
+        typewriterEffect(textEl, "Still there? Don't leave me hanging... scroll around, explore!");
+        showToast("Passion is getting lonely...");
+      }
+    }, 45000);
+  }
+
+  ['mousemove', 'keydown', 'scroll', 'click'].forEach(evt => {
+    document.addEventListener(evt, resetIdleTimer, { passive: true });
+  });
+
+  // 5. Title click — 3 rapid clicks on the PASSION title
+  let titleClicks = [];
+
+  function initTitleEasterEgg() {
+    const title = document.querySelector('h1.glitch');
+    if (!title) return;
+
+    title.style.cursor = 'pointer';
+    title.addEventListener('click', () => {
+      const now = Date.now();
+      titleClicks.push(now);
+      if (titleClicks.length > 3) titleClicks.shift();
+
+      if (titleClicks.length >= 3 && now - titleClicks[0] < 1000) {
+        titleClicks = [];
+        // Glitch the title hard
+        title.style.animation = 'glitch-hard 0.15s ease 5';
+        showToast('SYSTEM OVERRIDE: Hello, world!', 'gold');
+        setTimeout(() => { title.style.animation = ''; }, 750);
+      }
+    });
+  }
+
   // ═══ INIT ═══
 
   initDialogue();
@@ -476,6 +659,9 @@
   initScrollReveal();
   initStatCounters();
   initAvatarInteraction();
+  initEasterAvatarClicks();
+  initTitleEasterEgg();
+  resetIdleTimer();
   fetchData().then(scheduleNextPoll);
   fetchLatestCommit();
 })();

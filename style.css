@@ -1132,3 +1132,161 @@ body.easter-hyped .avatar-img {
   border-color: #ffd700;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
 }
+
+/* ═══ GLITCH OVERLAY (1-in-30 random load) ═══ */
+.glitch-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  pointer-events: none;
+  background: rgba(0, 240, 255, 0.02);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.glitch-overlay.active {
+  opacity: 1;
+  animation: glitch-screen 0.15s ease infinite;
+}
+@keyframes glitch-screen {
+  0% { background: rgba(0, 240, 255, 0.03); transform: translate(0); }
+  20% { background: rgba(255, 0, 110, 0.04); transform: translate(-2px, 1px); }
+  40% { background: rgba(0, 240, 255, 0.05); transform: translate(1px, -1px); }
+  60% { background: rgba(157, 78, 221, 0.04); transform: translate(-1px, 2px); }
+  80% { background: rgba(0, 240, 255, 0.03); transform: translate(2px, 0); }
+  100% { background: rgba(0, 0, 0, 0.02); transform: translate(0); }
+}
+.glitch-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  white-space: nowrap;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.8), 2px 2px 0 var(--accent), -2px -2px 0 var(--secondary);
+  animation: glitch-text 0.2s ease infinite;
+}
+@keyframes glitch-text {
+  0%, 100% { transform: translate(-50%, -50%); }
+  25% { transform: translate(-51%, -49%); }
+  50% { transform: translate(-49%, -51%); }
+  75% { transform: translate(-50.5%, -50.5%); }
+}
+
+/* ═══ CUSTOM CONTEXT MENU ═══ */
+.passion-context-menu {
+  position: fixed;
+  z-index: 1001;
+  min-width: 200px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 6px 0;
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 240, 255, 0.1);
+}
+.passion-context-menu.show {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+.ctx-item {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.ctx-item:hover {
+  background: rgba(0, 240, 255, 0.08);
+  color: var(--primary);
+}
+.ctx-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+  padding: 0;
+  cursor: default;
+}
+.ctx-divider:hover { background: var(--border); }
+
+/* ═══ LATE NIGHT MODE ═══ */
+body.late-night {
+  --primary: #7b68ee;
+  --secondary: #4a3f8a;
+}
+body.late-night .scanlines {
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(123, 104, 238, 0.01) 2px, rgba(123, 104, 238, 0.01) 4px
+  );
+}
+body.late-night .hero {
+  background: radial-gradient(ellipse at center, rgba(123, 104, 238, 0.04) 0%, transparent 70%);
+}
+body.late-night .avatar-img {
+  border-color: #7b68ee;
+  box-shadow: 0 0 20px rgba(123, 104, 238, 0.3), inset 0 0 20px rgba(123, 104, 238, 0.1);
+}
+
+/* ═══ TRUST BADGE ═══ */
+.trust-badge {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: var(--surface-2);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 8px;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+.trust-badge.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ PRINT STYLESHEET — Secret message ═══ */
+@media print {
+  .scanlines, .particles, .easter-toast, .trust-badge,
+  .passion-context-menu, .glitch-overlay { display: none !important; }
+
+  body {
+    background: white !important;
+    color: #111 !important;
+  }
+
+  body::after {
+    content: "You printed me? In 2026? That's either retro-cool or you're gathering evidence. Either way — respect. 💜 — Passion";
+    display: block;
+    margin-top: 3rem;
+    padding: 2rem;
+    border: 2px dashed #9d4edd;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    color: #9d4edd;
+    text-align: center;
+  }
+
+  .hero::before, .hero::after { display: none; }
+  .hud-ring { display: none; }
+  .avatar-img { border: 2px solid #333 !important; box-shadow: none !important; animation: none !important; }
+  h1.glitch { color: #111; text-shadow: none; }
+  .navi-card-inner, .game-card, .project-card { border-color: #ccc; }
+  a { color: #111 !important; }
+  a::after { content: " (" attr(href) ")"; font-size: 0.7em; color: #666; }
+}

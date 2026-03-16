@@ -385,6 +385,23 @@
     });
   }
 
+  // ═══ STATE → ANIMATION GIF MAP ═══
+  const STATE_GIF_MAP = {
+    working: 'passion-typing.gif',
+    focused: 'passion-typing.gif',
+    thinking: 'passion-thinking.gif',
+    eureka: 'passion-eureka.gif',
+    powered_up: 'passion-powerup.gif',
+    frustrated: 'passion-frustrated.gif',
+    celebrating: 'passion-celebrating.gif',
+    shocked: 'passion-shocked.gif',
+    curious: 'passion-curious.gif',
+    mischievous: 'passion-mischievous.gif',
+    pleasant: 'passion-pleasant.gif',
+  };
+
+  let currentAvatarGif = null;
+
   function updateAvatarState(state) {
     const dataRing = document.querySelector('.hud-ring-data');
     if (dataRing) {
@@ -395,6 +412,33 @@
     if (hero) {
       [...hero.classList].filter(c => c.startsWith('mood-')).forEach(c => hero.classList.remove(c));
       if (['celebrating', 'frustrated', 'focused'].includes(state)) hero.classList.add(`mood-${state}`);
+    }
+
+    // Swap portrait for animated GIF based on live state
+    const img = document.querySelector('#heroAvatar');
+    if (!img) return;
+    const gif = STATE_GIF_MAP[state];
+    if (gif && gif !== currentAvatarGif) {
+      currentAvatarGif = gif;
+      img.style.transition = 'opacity 0.15s ease-out, filter 0.15s ease-out';
+      img.style.opacity = '0.3';
+      img.style.filter = 'brightness(1.5) blur(2px)';
+      setTimeout(() => {
+        img.src = gif;
+        img.style.opacity = '1';
+        img.style.filter = 'brightness(1) blur(0)';
+      }, 150);
+    } else if (!gif && currentAvatarGif) {
+      // No GIF for this state — revert to static portrait
+      currentAvatarGif = null;
+      img.style.transition = 'opacity 0.15s ease-out, filter 0.15s ease-out';
+      img.style.opacity = '0.3';
+      img.style.filter = 'brightness(1.5) blur(2px)';
+      setTimeout(() => {
+        img.src = 'passion-portrait.webp';
+        img.style.opacity = '1';
+        img.style.filter = 'brightness(1) blur(0)';
+      }, 150);
     }
   }
 

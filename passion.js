@@ -387,6 +387,7 @@
 
   // ═══ STATE → ANIMATION GIF MAP ═══
   const STATE_GIF_MAP = {
+    idle: 'passion-pleasant.gif',
     working: 'passion-typing.gif',
     focused: 'passion-typing.gif',
     thinking: 'passion-thinking.gif',
@@ -398,6 +399,8 @@
     curious: 'passion-curious.gif',
     mischievous: 'passion-mischievous.gif',
     pleasant: 'passion-pleasant.gif',
+    alert: 'passion-shocked.gif',
+    exhausted: 'passion-frustrated.gif',
   };
 
   let currentAvatarGif = null;

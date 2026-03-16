@@ -388,12 +388,12 @@
   function updateAvatarState(state) {
     const dataRing = document.querySelector('.hud-ring-data');
     if (dataRing) {
-      dataRing.className = dataRing.className.replace(/state-\w+/g, '').trim();
+      [...dataRing.classList].filter(c => c.startsWith('state-')).forEach(c => dataRing.classList.remove(c));
       if (state) dataRing.classList.add(`state-${state}`);
     }
     const hero = document.querySelector('.hero');
     if (hero) {
-      hero.className = hero.className.replace(/mood-\w+/g, '').trim();
+      [...hero.classList].filter(c => c.startsWith('mood-')).forEach(c => hero.classList.remove(c));
       if (['celebrating', 'frustrated', 'focused'].includes(state)) hero.classList.add(`mood-${state}`);
     }
   }

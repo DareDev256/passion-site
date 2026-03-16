@@ -419,6 +419,7 @@
 
     // Swap portrait for animated GIF based on live state
     const img = document.querySelector('#heroAvatar');
+    const source = img?.parentElement?.querySelector('source');
     if (!img) return;
     const gif = STATE_GIF_MAP[state];
     if (gif && gif !== currentAvatarGif) {
@@ -427,18 +428,21 @@
       img.style.opacity = '0.3';
       img.style.filter = 'brightness(1.5) blur(2px)';
       setTimeout(() => {
+        // Remove <source> so browser uses img.src instead of srcset
+        if (source) source.remove();
         img.src = gif;
         img.style.opacity = '1';
         img.style.filter = 'brightness(1) blur(0)';
       }, 150);
+    } else if (gif && gif === currentAvatarGif) {
+      // Same GIF, do nothing
     } else if (!gif && currentAvatarGif) {
-      // No GIF for this state — revert to static portrait
       currentAvatarGif = null;
       img.style.transition = 'opacity 0.15s ease-out, filter 0.15s ease-out';
       img.style.opacity = '0.3';
       img.style.filter = 'brightness(1.5) blur(2px)';
       setTimeout(() => {
-        img.src = 'passion-portrait.webp';
+        img.src = 'passion-portrait.png';
         img.style.opacity = '1';
         img.style.filter = 'brightness(1) blur(0)';
       }, 150);

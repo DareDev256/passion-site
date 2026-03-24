@@ -1,15 +1,14 @@
 /**
  * Passion Site — Character-First Entity Engine
- * API mood integration, SSE live updates, scroll reveals, console API.
+ * API mood, scroll-based emotions, chat widget, scroll reveals, console API.
  */
 (function () {
   'use strict';
 
-  const API_URL = 'https://passion-api.jamesdare.com/api/public';
-  const API_TIMEOUT = 3000;
-  const YT_VIDEO_ID = 'jpjFR1leW9I';
+  var API_URL = 'https://passion-api.jamesdare.com/api/public';
+  var API_TIMEOUT = 3000;
 
-  const MOOD_GIF_MAP = {
+  var MOOD_GIF_MAP = {
     happy: 'passion-celebrating.gif',
     celebrating: 'passion-celebrating.gif',
     curious: 'passion-curious.gif',
@@ -33,35 +32,20 @@
     working: 'passion-typing.gif',
   };
 
-  const FALLBACK_MOOD = 'mischievous';
+  var FALLBACK_MOOD = 'mischievous';
 
-  // ═══ YOUTUBE HERO VIDEO ═══
-  function initHeroVideo() {
-    const iframe = document.getElementById('heroIframe');
-    if (!iframe) return;
-
-    // On mobile (<=640px), CSS hides the iframe — skip loading
-    if (window.innerWidth <= 640) return;
-
-    const src = 'https://www.youtube.com/embed/' + YT_VIDEO_ID +
-      '?autoplay=1&mute=1&loop=1&playlist=' + YT_VIDEO_ID +
-      '&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1';
-
-    // IntersectionObserver: swap srcdoc thumbnail to real iframe when hero enters viewport
-    var observer = new IntersectionObserver(
-      function (entries) {
-        if (entries[0].isIntersecting) {
-          iframe.src = src;
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(document.getElementById('hero'));
-  }
+  // Scroll-based mood mapping — changes hero avatar as you scroll
+  var SECTION_MOODS = [
+    { id: 'hero', mood: 'mischievous', label: 'feeling mischievous' },
+    { id: 'intrigue', mood: 'thinking', label: 'feeling reflective' },
+    { id: 'flex', mood: 'typing', label: 'feeling productive' },
+    { id: 'play', mood: 'eureka', label: 'feeling proud' },
+    { id: 'exit', mood: 'celebrating', label: 'feeling excited' },
+  ];
 
   // ═══ API FETCH ═══
   var apiData = null;
+  var apiControlled = false; // true if API is providing live mood
 
   async function fetchPassionState() {
     try {
@@ -74,33 +58,28 @@
       clearTimeout(timeout);
       if (!res.ok) throw new Error('HTTP ' + res.status);
       apiData = await res.json();
+      apiControlled = true;
       applyLiveState(apiData);
     } catch (err) {
-      console.warn('[Passion] API unreachable:', err.message);
-      applyFallbackState();
+      console.warn('[Passion] API unreachable — using scroll-based moods');
+      apiControlled = false;
     }
   }
 
   function applyLiveState(data) {
-    // Hero avatar mood
     var mood = data.mood || FALLBACK_MOOD;
-    var gif = MOOD_GIF_MAP[mood] || MOOD_GIF_MAP[FALLBACK_MOOD];
-    var avatarImg = document.getElementById('heroAvatarImg');
-    if (avatarImg) avatarImg.src = gif;
-
-    var moodEl = document.getElementById('heroMood');
-    if (moodEl) moodEl.textContent = 'feeling ' + mood;
-
-    // Stats (update if API provides them)
+    setHeroMood(mood, 'feeling ' + mood);
     if (data.modules) setText('statModules', data.modules);
     if (data.loc) setText('statLoc', data.loc);
     if (data.repos) setText('statRepos', data.repos);
   }
 
-  function applyFallbackState() {
+  function setHeroMood(mood, label) {
+    var gif = MOOD_GIF_MAP[mood] || MOOD_GIF_MAP[FALLBACK_MOOD];
+    var avatarImg = document.getElementById('heroAvatarImg');
+    if (avatarImg && avatarImg.src.indexOf(gif) === -1) avatarImg.src = gif;
     var moodEl = document.getElementById('heroMood');
-    if (moodEl) moodEl.textContent = 'feeling mysterious';
-    // Stats keep their hardcoded HTML values
+    if (moodEl) moodEl.textContent = label;
   }
 
   function setText(id, value) {
@@ -110,24 +89,43 @@
 
   // ═══ SSE LIVE MOOD UPDATES ═══
   function initSSE() {
-    if (!apiData) return; // Only attempt if initial fetch succeeded
-
+    if (!apiData) return;
     try {
       var source = new EventSource(API_URL + '/stream');
       source.onmessage = function (event) {
         try {
           var data = JSON.parse(event.data);
           if (data.mood) {
-            var gif = MOOD_GIF_MAP[data.mood] || MOOD_GIF_MAP[FALLBACK_MOOD];
-            var avatarImg = document.getElementById('heroAvatarImg');
-            if (avatarImg) avatarImg.src = gif;
-            var moodEl = document.getElementById('heroMood');
-            if (moodEl) moodEl.textContent = 'feeling ' + data.mood;
+            apiControlled = true;
+            setHeroMood(data.mood, 'feeling ' + data.mood);
           }
-        } catch (e) { /* ignore parse errors */ }
+        } catch (e) {}
       };
-      source.onerror = function () { source.close(); }; // No reconnect — static-first
-    } catch (e) { /* SSE not supported or endpoint unavailable */ }
+      source.onerror = function () { source.close(); };
+    } catch (e) {}
+  }
+
+  // ═══ SCROLL-BASED MOOD CHANGES ═══
+  function initScrollMoods() {
+    var sectionEls = SECTION_MOODS.map(function (s) {
+      return { el: document.getElementById(s.id), mood: s.mood, label: s.label };
+    }).filter(function (s) { return s.el; });
+
+    if (!sectionEls.length) return;
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !apiControlled) {
+            var match = sectionEls.find(function (s) { return s.el === entry.target; });
+            if (match) setHeroMood(match.mood, match.label);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    sectionEls.forEach(function (s) { observer.observe(s.el); });
   }
 
   // ═══ SCROLL REVEAL ═══
@@ -135,7 +133,6 @@
     var sections = document.querySelectorAll('.reveal');
     if (!sections.length) return;
 
-    // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       sections.forEach(function (s) { s.classList.add('visible'); });
       return;
@@ -156,7 +153,92 @@
     sections.forEach(function (s) { observer.observe(s); });
   }
 
-  // ═══ CONSOLE API — Hidden dev feature ═══
+  // ═══ CHAT WIDGET ═══
+  var CHAT_RESPONSES = {
+    hello: "Hey! You actually talk to agents. That's rare. I respect that.",
+    hi: "Hi! Welcome to my world. I'm always here — literally, 24/7.",
+    'who are you': "I'm Passion — an autonomous AI agent. I run on a Mac Mini in Toronto. I write code, hunt jobs, and improve myself while James sleeps.",
+    'what do you do': "I manage 47 repos, ship code autonomously, scan for threats, hunt jobs for James, and learn from every PR review he gives me.",
+    help: "Try asking: who are you, what do you do, how were you built, tell me a joke, what are you thinking",
+    'how were you built': "109K lines of code across 92 modules. Python core, 3 LLM backends (Claude, Gemini, DeepSeek), SQLite for persistence, Playwright for automation.",
+    'tell me a joke': "Why do programmers prefer dark mode? Because light attracts bugs. ...I'll be here all week. Literally.",
+    'what are you thinking': "Right now? I'm thinking about how most AI demos are chatbots in a box. I'm a whole ecosystem. Check out my dashboard.",
+    games: "I built 10 games to train James on AI, security, networking, and hardware. Scroll up to play them. My favorite? Red Team Arena — breaking AI is fun.",
+    james: "James built me. He's an AI Solutions Engineer in Toronto. He directed 350+ music videos too. Check his portfolio at jamesdare.com.",
+    music: "Sahbabii — ANIME WORLD. That's the vibe. James directed music videos for years. That creative energy lives in how I was designed.",
+    dashboard: "My full interface is the PACT Dashboard — it looks like a game UI. 10 scenes, NPC dialogue, holographic HUD. Link is at the bottom.",
+  };
+
+  function getResponse(msg) {
+    var key = (msg || '').toLowerCase().trim();
+    if (!key) return "Say something! I don't bite... unless you try to prompt inject me.";
+    if (CHAT_RESPONSES[key]) return CHAT_RESPONSES[key];
+
+    // Fuzzy matching — check if any key is contained in the message
+    var keys = Object.keys(CHAT_RESPONSES);
+    for (var i = 0; i < keys.length; i++) {
+      if (key.indexOf(keys[i]) !== -1 || keys[i].indexOf(key) !== -1) {
+        return CHAT_RESPONSES[keys[i]];
+      }
+    }
+
+    var fallbacks = [
+      "Interesting. I'll process that in my next brain cycle.",
+      "Hmm, that's not in my conversational training. Try: help",
+      "I'm better at shipping code than small talk. But I appreciate the effort.",
+      "That's above my pay grade. Ask James — I just work here. 24/7.",
+      "My neural pathways aren't calibrated for that one. Try asking about my games or what I do.",
+    ];
+    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+  }
+
+  function initChatWidget() {
+    var toggle = document.getElementById('chatToggle');
+    var panel = document.getElementById('chatPanel');
+    var closeBtn = document.getElementById('chatClose');
+    var form = document.getElementById('chatForm');
+    var input = document.getElementById('chatInput');
+    var messages = document.getElementById('chatMessages');
+
+    if (!toggle || !panel) return;
+
+    toggle.addEventListener('click', function () {
+      panel.classList.toggle('open');
+      if (panel.classList.contains('open')) input.focus();
+    });
+
+    closeBtn.addEventListener('click', function () {
+      panel.classList.remove('open');
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var msg = input.value.trim();
+      if (!msg) return;
+
+      // Add user message
+      var userBubble = document.createElement('div');
+      userBubble.className = 'chat-msg chat-msg-user';
+      userBubble.textContent = msg;
+      messages.appendChild(userBubble);
+
+      input.value = '';
+
+      // Passion responds after a short delay
+      setTimeout(function () {
+        var response = getResponse(msg);
+        var passionBubble = document.createElement('div');
+        passionBubble.className = 'chat-msg chat-msg-passion';
+        passionBubble.textContent = response;
+        messages.appendChild(passionBubble);
+        messages.scrollTop = messages.scrollHeight;
+      }, 400 + Math.random() * 600);
+
+      messages.scrollTop = messages.scrollHeight;
+    });
+  }
+
+  // ═══ CONSOLE API ═══
   function initConsoleAPI() {
     var ascii = '\n' +
       '%c╔═══════════════════════════════════╗\n' +
@@ -170,14 +252,7 @@
 
     window.passion = {
       talk: function (msg) {
-        var responses = {
-          hello: "Hey. Most people never check the console. You're different.",
-          hi: "Hi! Welcome to my brain. Well, the public-facing part of it.",
-          help: "Commands: passion.talk('hello'), passion.stats(), passion.hack()",
-          '': "Say something! passion.talk('your message')",
-        };
-        var key = (msg || '').toLowerCase().trim();
-        var response = responses[key] || "Interesting. I'll think about that.";
+        var response = getResponse(msg);
         console.log('%c Passion: ' + response, 'color: #8b5cf6; font-size: 12px;');
         return response;
       },
@@ -198,8 +273,9 @@
 
   // ═══ INIT ═══
   function init() {
-    initHeroVideo();
     initScrollReveal();
+    initScrollMoods();
+    initChatWidget();
     initConsoleAPI();
     fetchPassionState().then(initSSE);
   }

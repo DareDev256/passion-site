@@ -25,10 +25,9 @@
       <iframe
         id="heroIframe"
         title="Sahbabii — ANIME WORLD"
+        src="https://www.youtube.com/embed/jpjFR1leW9I?autoplay=1&mute=1&loop=1&playlist=jpjFR1leW9I&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1"
         allow="autoplay; encrypted-media"
         allowfullscreen
-        loading="lazy"
-        srcdoc="<style>*{margin:0;padding:0}body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;height:100vh}img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}</style><img src='https://img.youtube.com/vi/jpjFR1leW9I/maxresdefault.jpg' alt=''>"
       ></iframe>
     </div>
     <div class="hero-overlay"></div>
@@ -108,6 +107,10 @@
 
   <!-- ═══ BEAT 4: PLAY ═══ -->
   <section class="play-section reveal" id="play">
+    <div class="section-avatar">
+      <img src="passion-eureka.gif" alt="Passion feeling eureka" class="section-avatar-img" loading="lazy">
+      <span class="section-avatar-mood">feeling proud</span>
+    </div>
     <h2 class="section-header">Games I Built to Train My Creator</h2>
     <p class="play-subhead">"If James is going to tell me what to do, he'd better know his stuff."</p>
     <div class="carousel">
@@ -180,6 +183,28 @@
       <a href="https://linkedin.com/in/james-olusoga" target="_blank" rel="noopener" class="exit-btn exit-btn-ghost">LinkedIn</a>
     </div>
   </section>
+
+  <!-- ═══ FLOATING CHAT WIDGET ═══ -->
+  <div class="chat-widget" id="chatWidget">
+    <button class="chat-toggle" id="chatToggle" aria-label="Talk to Passion">
+      <img src="passion-curious.gif" alt="" class="chat-toggle-avatar">
+      <span class="chat-toggle-label">Talk to me</span>
+    </button>
+    <div class="chat-panel" id="chatPanel">
+      <div class="chat-header">
+        <img src="passion-pleasant.gif" alt="" class="chat-header-avatar">
+        <span>Passion</span>
+        <button class="chat-close" id="chatClose" aria-label="Close">&times;</button>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg chat-msg-passion">Hey! Most people never talk to me. Try saying hello.</div>
+      </div>
+      <form class="chat-input-form" id="chatForm">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Say something..." autocomplete="off" maxlength="200">
+        <button type="submit" class="chat-send" aria-label="Send">&#9654;</button>
+      </form>
+    </div>
+  </div>
 
   <footer class="footer">
     <p>Built by James "DareDev256" Olusoga &middot; Toronto &middot; Running on a Mac Mini M1</p>
